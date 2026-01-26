@@ -1,18 +1,20 @@
 import { Stack } from "expo-router";
-import { StatusBar, View } from "react-native";
 import "../global.css";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import {useSystemBars} from "@/app/hooks/useSystemBars";
+import {StatusBar, useColorScheme} from "react-native";
 
 export default function RootLayout() {
-  return (
-      <View style={{ flex: 1, backgroundColor: "#18181B" }}>
-        {/* Задаємо статусбар темним */}
-        <StatusBar
-            barStyle="light-content"
-            backgroundColor="#18181B"
-        />
+    const isDark = useColorScheme() === "dark";
 
-        {/* Stack з усіма екранами */}
-        <Stack screenOptions={{ headerShown: false }} />
-      </View>
+    useSystemBars();
+
+  return (
+      <>
+          <SafeAreaProvider>
+              <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
+              <Stack screenOptions={{ headerShown: false }} />
+          </SafeAreaProvider>
+      </>
   );
 }
