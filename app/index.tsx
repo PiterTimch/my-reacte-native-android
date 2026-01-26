@@ -1,6 +1,7 @@
 import { Text, View, StatusBar, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 
 export default function Index() {
 
@@ -47,6 +48,7 @@ export default function Index() {
 
                         <TouchableOpacity
                             activeOpacity={0.85}
+                            onPress={() => router.push("/login")}
                             className="bg-emerald-500 py-4 rounded-2xl items-center"
                         >
                             <Text className="text-white text-xl font-bold tracking-tight">
@@ -57,6 +59,7 @@ export default function Index() {
 
                     <TouchableOpacity
                         activeOpacity={0.85}
+                        onPress={() => router.push("/register")}
                         className="border border-zinc-300 dark:border-zinc-700 py-4 rounded-2xl items-center"
                     >
                         <Text className="text-zinc-900 dark:text-zinc-100 text-lg font-semibold">
