@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { View, Text, StatusBar, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, Image, TextInput } from "react-native";
+import { View, Text, StatusBar, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
-import {ImagePickerButton} from "@/app/components/form/ImagePickerButton";
-import {InputField} from "@/app/components/form/InputField";
-import {PasswordField} from "@/app/components/form/PasswordField";
+import {ImagePickerButton} from "@/components/form/ImagePickerButton";
+import {InputField} from "@/components/form/InputField";
+import {PasswordField} from "@/components/form/PasswordField";
 
 export default function RegisterScreen() {
     const [image, setImage] = useState<string | null>(null);

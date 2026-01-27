@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, StatusBar, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import {InputField} from "@/app/components/form/InputField";
-import {PasswordField} from "@/app/components/form/PasswordField";
+import {InputField} from "@/components/form/InputField";
+import {PasswordField} from "@/components/form/PasswordField";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");

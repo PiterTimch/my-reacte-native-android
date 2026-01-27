@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import "../global.css";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import {useSystemBars} from "@/app/hooks/useSystemBars";
+import {useSystemBars} from "@/hooks/useSystemBars";
 import {StatusBar, useColorScheme} from "react-native";
 
 export default function RootLayout() {
