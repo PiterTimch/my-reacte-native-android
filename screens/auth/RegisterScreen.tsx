@@ -32,7 +32,7 @@ export default function RegisterScreen() {
             <StatusBar barStyle="default" />
             <LinearGradient colors={["rgba(16,185,129,0.35)", "transparent"]} className="absolute w-full h-[380px] rounded-full blur-[120px]" />
 
-            <SafeAreaView className="flex-1 px-6 py-12">
+            <SafeAreaView className="flex-1 p-6">
                 <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
                     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "space-between" }} keyboardShouldPersistTaps="handled">
                         <View className="items-center mt-4">

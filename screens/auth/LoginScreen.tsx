@@ -12,7 +12,7 @@ export default function LoginScreen() {
     return (
         <View className="flex-1 bg-zinc-50 dark:bg-zinc-950">
             <StatusBar barStyle="default" />
-            <SafeAreaView className="flex-1 px-6 py-12">
+            <SafeAreaView className="flex-1 p-6">
                 <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
                     <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }} keyboardShouldPersistTaps="handled">
                         <View className="items-center mb-12">
