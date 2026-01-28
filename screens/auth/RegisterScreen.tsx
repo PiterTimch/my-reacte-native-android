@@ -49,8 +49,12 @@ export default function RegisterScreen() {
                         </View>
 
                         <View className="flex-row gap-4 mb-4">
-                            <InputField placeholder="Ім'я" />
-                            <InputField placeholder="Прізвище" />
+                            <View className="flex-1">
+                                <InputField placeholder="Ім'я" />
+                            </View>
+                            <View className="flex-1">
+                                <InputField placeholder="Прізвище" />
+                            </View>
                         </View>
 
                         <View className="gap-y-4">
