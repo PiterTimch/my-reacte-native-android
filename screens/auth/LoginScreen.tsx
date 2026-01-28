@@ -3,6 +3,7 @@ import { View, Text, StatusBar, TouchableOpacity, ScrollView, KeyboardAvoidingVi
 import { SafeAreaView } from "react-native-safe-area-context";
 import {InputField} from "@/components/form/InputField";
 import {PasswordField} from "@/components/form/PasswordField";
+import { router } from "expo-router";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
@@ -35,7 +36,7 @@ export default function LoginScreen() {
                             <PasswordField placeholder="Пароль" value={password} onChangeText={setPassword} />
 
                             <TouchableOpacity className="self-end mt-1">
-                                <Text className="text-emerald-500 dark:text-emerald-400 font-medium">Забув пароль?</Text>
+                                <Text onPress={() => router.push("/test")} className="text-emerald-500 dark:text-emerald-400 font-medium">Забув пароль?</Text>
                             </TouchableOpacity>
                         </View>
 

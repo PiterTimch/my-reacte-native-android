@@ -9,12 +9,12 @@ export default function RootLayout() {
 
     useSystemBars();
 
-  return (
-      <>
-          <SafeAreaProvider>
-              <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
-              <Stack screenOptions={{ headerShown: false }} />
-          </SafeAreaProvider>
-      </>
-  );
+    return (
+        <>
+            <SafeAreaProvider>
+                <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
+                <Stack screenOptions={{ headerShown: false }} />
+            </SafeAreaProvider>
+        </>
+    );
 }
