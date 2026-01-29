@@ -3,6 +3,7 @@ import {IAuthResponse} from "@/types/auth/IAuthResponse";
 import {IRegister} from "@/types/auth/IRegister";
 import {createBaseQuery} from "@/utils/CreateBaaseQuery";
 import {ILogin} from "@/types/auth/ILogin";
+import {serialize} from "object-to-formdata";
 
 export const authService = createApi({
     reducerPath: 'api/account',
@@ -20,7 +21,7 @@ export const authService = createApi({
 
         register: builder.mutation<IAuthResponse, IRegister>({
             query: (credentials) => {
-                const formData =  null; //serialize(credentials);
+                const formData =  serialize(credentials);
 
                 return {
                     url: 'register',
