@@ -4,10 +4,22 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import {InputField} from "@/components/form/InputField";
 import {PasswordField} from "@/components/form/PasswordField";
 import { router } from "expo-router";
+import { useLoginMutation } from "@/services/authService";
 
 export default function LoginScreen() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const [login, { isLoading, error }] = useLoginMutation();
+
+    const onSubmit = async () => {
+        try {
+            const res = await login({ email, password }).unwrap();
+            console.log("TOKEN:", res.token);
+        } catch (e) {
+            console.log("Login error:", e);
+        }
+    };
 
     return (
         <View className="flex-1 bg-zinc-50 dark:bg-zinc-950">
@@ -41,8 +53,14 @@ export default function LoginScreen() {
                         </View>
 
                         <View className="mt-8">
-                            <TouchableOpacity className="bg-emerald-500 py-5 rounded-2xl items-center shadow-md" activeOpacity={0.85}>
-                                <Text className="text-white text-xl font-bold tracking-tight">Увійти</Text>
+                            <TouchableOpacity
+                                className="bg-emerald-500 py-5 rounded-2xl items-center"
+                                onPress={onSubmit}
+                                disabled={isLoading}
+                            >
+                                <Text className="text-white text-xl font-bold">
+                                    {isLoading ? "Завантаження..." : "Увійти"}
+                                </Text>
                             </TouchableOpacity>
                         </View>
                     </ScrollView>
