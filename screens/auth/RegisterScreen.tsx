@@ -17,9 +17,10 @@ import { InputField } from "@/components/form/InputField";
 import { PasswordField } from "@/components/form/PasswordField";
 import { useRegisterMutation } from "@/services/authService";
 import { IRegister } from "@/types/auth/IRegister";
+import { useForm } from "@/hooks/useForm";
 
 export default function RegisterScreen() {
-    const [form, setForm] = useState<IRegister>({
+    const { form, setForm, onChange } = useForm<IRegister>({
         firstName: "",
         lastName: "",
         email: "",
@@ -28,15 +29,6 @@ export default function RegisterScreen() {
 
     const [confirmPassword, setConfirmPassword] = useState("");
     const [register, { isLoading }] = useRegisterMutation();
-
-    const onChange =
-        <K extends keyof IRegister>(key: K) =>
-            (value: IRegister[K]) => {
-                setForm((prev) => ({
-                    ...prev,
-                    [key]: value,
-                }));
-            };
 
     const pickImage = async () => {
         const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
