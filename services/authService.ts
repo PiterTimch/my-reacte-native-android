@@ -15,7 +15,6 @@ const handleAuthSuccess = async (
         const { data } = await queryFulfilled;
         if (data?.token) {
             dispatch(loginSuccess(data.token));
-            console.log("TOKEN:", data.token);
         }
     } catch (error) {
         console.error('Auth error:', error);

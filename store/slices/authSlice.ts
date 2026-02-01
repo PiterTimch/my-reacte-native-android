@@ -1,6 +1,6 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import {jwtDecode} from "jwt-decode";
-import {IUserIdentity} from "@/types/auth/IUserIdentity";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { jwtDecode } from "jwt-decode";
+import { IUserIdentity } from "@/types/auth/IUserIdentity";
 
 interface AuthState {
     user: IUserIdentity | null;
@@ -10,8 +10,16 @@ const getUserFromToken = (token: string): IUserIdentity | null => {
     try {
         const decoded: any = jwtDecode(token);
         return {
-            name: decoded["name"] ?? decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] ?? "",
-            email: decoded["email"] ?? decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"] ?? "",
+            name:
+                decoded["name"] ??
+                decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"] ??
+                "",
+            email:
+                decoded["email"] ??
+                decoded[
+                    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"
+                    ] ??
+                "",
             image: decoded["image"] ?? "",
             token,
             role: decoded["roles"] ?? null,
@@ -22,32 +30,22 @@ const getUserFromToken = (token: string): IUserIdentity | null => {
     }
 };
 
-const token = localStorage.getItem('token');
-const initialUser = token ? getUserFromToken(token) : null;
-
 const initialState: AuthState = {
-    user: initialUser,
+    user: null,
 };
 
 const authSlice = createSlice({
-    name: 'auth',
+    name: "auth",
     initialState,
     reducers: {
-        loginSuccess: (state, action: PayloadAction<string>) => {
-            const user = getUserFromToken(action.payload);
-            if (user) {
-                state.user = user;
-                localStorage.setItem('token', action.payload);
-            }
+        loginSuccess: (state, action: PayloadAction<string | null>) => {
+            state.user = action.payload ? getUserFromToken(action.payload) : null;
         },
         logout: (state) => {
             state.user = null;
-            localStorage.removeItem('token');
         },
     },
 });
 
 export const { loginSuccess, logout } = authSlice.actions;
-
-
 export default authSlice.reducer;
