@@ -1,9 +1,16 @@
 import { Text, View, StatusBar, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
-import { router } from "expo-router";
+import {Redirect, router} from "expo-router";
+import {useAppSelector} from "@/store";
 
 export default function Index() {
+
+    const { user } = useAppSelector(state => state.auth);
+
+    if (!user) {
+        return <Redirect href="/chat/home" />;
+    }
 
     return (
         <View className="flex-1 bg-zinc-50 dark:bg-zinc-950">
