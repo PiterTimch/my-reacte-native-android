@@ -12,7 +12,6 @@ const ChatList: FC<ChatListProps> = ({ chats, activeChatId, onSelect }) => {
     return (
         <ScrollView className="flex-1 p-3">
             {chats.map(chat => {
-                // Use chat.chatId instead of chat.id
                 const isActive = chat.chatId === activeChatId;
 
                 return (
