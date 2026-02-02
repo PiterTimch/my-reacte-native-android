@@ -4,6 +4,7 @@ import {IChatType} from "@/types/chat/IChatType";
 import {IUserShort} from "@/types/chat/IUserShort";
 import { IChatCreate } from "@/types/chat/IChatCreate";
 import {IChatListItem} from "@/types/chat/IChatListItem";
+import {IMessageItem} from "@/types/chat/IMessageItem";
 
 export const chatService = createApi({
     reducerPath: 'api/chats',
@@ -28,6 +29,10 @@ export const chatService = createApi({
 
         getMyChats: builder.query<IChatListItem[], void>({
             query: () => 'my'
+        }),
+
+        getChatMessages: builder.query<IMessageItem[], number>({
+            query: (chatId) => `${chatId}/messages`
         })
     })
 });
@@ -36,5 +41,6 @@ export const {
     useGetChatTypesQuery,
     useGetUsersQuery,
     useCreateChatMutation,
-    useGetMyChatsQuery
+    useGetMyChatsQuery,
+    useGetChatMessagesQuery
 } = chatService;
