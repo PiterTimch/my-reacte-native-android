@@ -19,8 +19,8 @@ export default function JoinScreen() {
 
     return (
         <View className="flex-1 flex-row bg-zinc-50 dark:bg-zinc-950">
-            <View className="w-[320px] border-r border-zinc-200 dark:border-zinc-800">
-                <ChatList
+            <View className="max-w-[280px] w-1/3 border-r border-zinc-200 dark:border-zinc-800">
+            <ChatList
                     chats={chats ?? []}
                     activeChatId={activeChatId}
                     onSelect={setActiveChatId}

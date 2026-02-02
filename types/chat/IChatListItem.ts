@@ -1,5 +1,5 @@
 export interface IChatListItem {
-    id: number;
+    chatId: number;
     name: string;
     chatTypeId: number;
 }
