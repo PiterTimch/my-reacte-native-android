@@ -8,6 +8,7 @@ import {IMessageItem} from "@/types/chat/IMessageItem";
 
 export const chatService = createApi({
     reducerPath: 'api/chats',
+    tagTypes: ['Chats'],
     baseQuery: createBaseQuery('chats'),
     endpoints: builder => ({
 
@@ -24,11 +25,13 @@ export const chatService = createApi({
                 url: '',
                 method: 'POST',
                 body
-            })
+            }),
+            invalidatesTags: ['Chats']
         }),
 
         getMyChats: builder.query<IChatListItem[], void>({
-            query: () => 'my'
+            query: () => 'my',
+            providesTags: ['Chats']
         }),
 
         getChatMessages: builder.query<IMessageItem[], number>({

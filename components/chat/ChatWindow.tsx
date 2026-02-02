@@ -14,7 +14,7 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
     });
 
     const [messages, setMessages] = useState<IMessageItem[]>([]);
-    const [input, setInput] = useState(""); // <- текст, що пише користувач
+    const [input, setInput] = useState("");
     const scrollViewRef = useRef<ScrollView>(null);
 
     useEffect(() => {
@@ -70,6 +70,10 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                         key={m.id ? m.id.toString() : index.toString()}
                         className="bg-zinc-200 dark:bg-zinc-800 p-3 rounded-xl self-start max-w-[85%]"
                     >
+                        {/* Відображаємо хто написав */}
+                        <Text className="text-zinc-600 dark:text-zinc-400 font-semibold mb-1">
+                            {m.userName || "Інший користувач"}
+                        </Text>
                         <Text className="text-zinc-900 dark:text-zinc-100">{m.message}</Text>
                     </View>
                 ))}

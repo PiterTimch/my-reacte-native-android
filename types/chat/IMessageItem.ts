@@ -3,4 +3,5 @@ export interface IMessageItem {
     message: string;
     chatId: number;
     userId: number;
+    userName: string;
 }
