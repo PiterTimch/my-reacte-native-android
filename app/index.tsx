@@ -8,7 +8,7 @@ export default function Index() {
 
     const { user } = useAppSelector(state => state.auth);
 
-    if (!user) {
+    if (user) {
         return <Redirect href="/chat/home" />;
     }
 
