@@ -6,8 +6,8 @@ import { IChatCreate } from "@/types/chat/IChatCreate";
 import {IChatListItem} from "@/types/chat/IChatListItem";
 
 export const chatService = createApi({
-    reducerPath: 'api/chat',
-    baseQuery: createBaseQuery('chat'),
+    reducerPath: 'api/chats',
+    baseQuery: createBaseQuery('chats'),
     endpoints: builder => ({
 
         getChatTypes: builder.query<IChatType[], void>({
@@ -20,7 +20,7 @@ export const chatService = createApi({
 
         createChat: builder.mutation<number, IChatCreate>({
             query: body => ({
-                url: 'create',
+                url: '',
                 method: 'POST',
                 body
             })

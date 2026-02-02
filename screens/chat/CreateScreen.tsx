@@ -39,7 +39,7 @@ export default function CreateChatScreen() {
         [chatTypes, form.chatTypeId]
     );
 
-    const isPrivate = selectedType?.code === "private";
+    const isPrivate = selectedType?.typeName === "Private";
 
     const toggleUser = (userId: number) => {
         setForm(prev => {
@@ -135,7 +135,7 @@ export default function CreateChatScreen() {
                                                     : "text-zinc-700 dark:text-zinc-300"
                                             }
                                         >
-                                            {type.name}
+                                            {type.typeName}
                                         </Text>
                                     </TouchableOpacity>
                                 ))}
