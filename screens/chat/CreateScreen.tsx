@@ -62,8 +62,8 @@ export default function CreateChatScreen() {
         }
 
         try {
-            const chatId = await createChat(form).unwrap();
-            // router.replace(`/chat/${chatId}`);
+            await createChat(form).unwrap();
+            router.replace(`/chat/join`);
         } catch (e) {
             console.log("Create chat error:", e);
         }

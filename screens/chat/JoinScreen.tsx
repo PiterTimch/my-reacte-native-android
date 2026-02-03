@@ -12,6 +12,11 @@ export default function JoinScreen() {
 
     const [activeChatId, setActiveChatId] = useState<number | null>(null);
 
+    // без юз ефекту било помилку
+
+    //if (!user?.token) return;
+    //createChatConnection(user.token).start();
+
     useEffect(() => {
         if (!user?.token) return;
         createChatConnection(user.token).start();

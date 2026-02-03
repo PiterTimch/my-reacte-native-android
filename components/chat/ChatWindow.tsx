@@ -21,7 +21,7 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
         if (history) setMessages(history);
     }, [history]);
 
-    useEffect(() => {
+    useEffect(() => { //без юз ефекту в мене не вийшло :(
         if (!chatId) return;
         const connection = getChatConnection();
         if (!connection) return;
