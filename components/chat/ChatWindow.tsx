@@ -9,10 +9,12 @@ import {
 } from "react-native";
 import { getChatConnection } from "@/hubs/chatHub";
 import { IMessageItem } from "@/types/chat/IMessageItem";
+import { IUserShort } from "@/types/chat/IUserShort";
 import {
     useGetChatMessagesQuery,
     useAmIAdminQuery,
     useEditChatMutation,
+    useGetUsersQuery,
 } from "@/services/chatService";
 
 interface ChatWindowProps {
@@ -36,8 +38,14 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
     const [editVisible, setEditVisible] = useState(false);
     const [chatName, setChatName] = useState("");
 
+    // стейти для додавання / видалення користувачів
+    const [addUserIds, setAddUserIds] = useState<number[]>([]);
+    const [removeUserIds, setRemoveUserIds] = useState<number[]>([]);
+    const [searchEmail, setSearchEmail] = useState("");
+
     const scrollViewRef = useRef<ScrollView>(null);
 
+    // --- Повідомлення ---
     useEffect(() => {
         if (history) setMessages(history);
     }, [history]);
@@ -64,7 +72,6 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
     const sendMessage = () => {
         const trimmed = input.trim();
         if (!trimmed || !chatId) return;
-
         const connection = getChatConnection();
         if (!connection) return;
 
@@ -72,20 +79,53 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
         setInput("");
     };
 
+    // --- Модалка редагування ---
     const openEdit = () => {
         setChatName("");
+        setAddUserIds([]);
+        setRemoveUserIds([]);
+        setSearchEmail("");
         setEditVisible(true);
     };
 
     const saveEdit = async () => {
-        if (!chatId || !chatName.trim()) return;
+        if (!chatId) return;
 
         await editChat({
             id: chatId,
-            name: chatName.trim(),
+            name: chatName.trim() || undefined,
+            addUserIds,
+            removeUserIds,
         });
 
         setEditVisible(false);
+        setAddUserIds([]);
+        setRemoveUserIds([]);
+        setSearchEmail("");
+    };
+
+    // --- Поточні учасники ---
+    const { data: members } = useGetUsersQuery(
+        { chatId: chatId! },
+        { skip: !editVisible || !chatId }
+    );
+
+    // --- Пошук користувачів для додавання ---
+    const { data: searchUsers } = useGetUsersQuery(
+        { email: searchEmail },
+        { skip: !editVisible || searchEmail.length < 2 }
+    );
+
+    const toggleAdd = (id: number) => {
+        setAddUserIds(prev =>
+            prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+        );
+    };
+
+    const toggleRemove = (id: number) => {
+        setRemoveUserIds(prev =>
+            prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+        );
     };
 
     if (!chatId) {
@@ -109,9 +149,7 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                         onPress={openEdit}
                         className="px-3 py-1 bg-emerald-500 rounded-lg"
                     >
-                        <Text className="text-white font-semibold">
-                            Редагувати
-                        </Text>
+                        <Text className="text-white font-semibold">Редагувати</Text>
                     </TouchableOpacity>
                 )}
             </View>
@@ -133,9 +171,7 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                         <Text className="text-zinc-600 dark:text-zinc-400 font-semibold mb-1">
                             {m.userName || "Інший користувач"}
                         </Text>
-                        <Text className="text-zinc-900 dark:text-zinc-100">
-                            {m.message}
-                        </Text>
+                        <Text className="text-zinc-900 dark:text-zinc-100">{m.message}</Text>
                     </View>
                 ))}
             </ScrollView>
@@ -154,24 +190,20 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                     onPress={sendMessage}
                     className="ml-2 bg-emerald-500 p-3 rounded-xl"
                 >
-                    <Text className="text-white font-semibold">
-                        Відправити
-                    </Text>
+                    <Text className="text-white font-semibold">Відправити</Text>
                 </TouchableOpacity>
             </View>
 
             {/* EDIT MODAL */}
-            <Modal
-                visible={editVisible}
-                transparent
-                animationType="fade"
-            >
+            <Modal visible={editVisible} transparent animationType="fade">
                 <View className="flex-1 bg-black/50 items-center justify-center">
-                    <View className="w-[90%] bg-white dark:bg-zinc-900 rounded-xl p-4">
+                    <ScrollView className="w-[90%] bg-white dark:bg-zinc-900 rounded-xl p-4">
+
                         <Text className="text-lg font-semibold mb-3 text-zinc-900 dark:text-zinc-100">
                             Редагувати чат
                         </Text>
 
+                        {/* Назва чату */}
                         <TextInput
                             value={chatName}
                             onChangeText={setChatName}
@@ -180,25 +212,65 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                             className="p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 mb-4"
                         />
 
-                        <View className="flex-row justify-end gap-3">
-                            <TouchableOpacity
-                                onPress={() => setEditVisible(false)}
+                        {/* Поточні учасники */}
+                        <Text className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+                            Поточні учасники:
+                        </Text>
+                        {members?.map(u => (
+                            <View
+                                key={u.id}
+                                className="flex-row justify-between items-center bg-zinc-200 dark:bg-zinc-800 p-2 rounded-lg mb-1"
                             >
-                                <Text className="text-zinc-500">
-                                    Скасувати
+                                <Text className="text-zinc-900 dark:text-zinc-100">{u.name}</Text>
+                                <TouchableOpacity onPress={() => toggleRemove(u.id)}>
+                                    <Text
+                                        className={`font-semibold ${
+                                            removeUserIds.includes(u.id) ? "text-red-500" : "text-emerald-500"
+                                        }`}
+                                    >
+                                        {removeUserIds.includes(u.id) ? "Видалено" : "Видалити"}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                        ))}
+
+                        {/* Пошук для додавання */}
+                        <TextInput
+                            value={searchEmail}
+                            onChangeText={setSearchEmail}
+                            placeholder="Пошук користувачів по email"
+                            placeholderTextColor="#888"
+                            className="p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 mb-2"
+                        />
+
+                        {searchUsers?.map(u => (
+                            <TouchableOpacity
+                                key={u.id}
+                                onPress={() => toggleAdd(u.id)}
+                                className="flex-row justify-between items-center bg-zinc-200 dark:bg-zinc-800 p-2 rounded-lg mb-1"
+                            >
+                                <Text className="text-zinc-900 dark:text-zinc-100">{u.name}</Text>
+                                <Text
+                                    className={`font-semibold ${
+                                        addUserIds.includes(u.id) ? "text-emerald-500" : "text-zinc-500"
+                                    }`}
+                                >
+                                    {addUserIds.includes(u.id) ? "Додано" : "Додати"}
                                 </Text>
+                            </TouchableOpacity>
+                        ))}
+
+                        {/* Кнопки */}
+                        <View className="flex-row justify-end gap-3 mt-3">
+                            <TouchableOpacity onPress={() => setEditVisible(false)}>
+                                <Text className="text-zinc-500">Скасувати</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity
-                                onPress={saveEdit}
-                                disabled={isLoading}
-                            >
-                                <Text className="text-emerald-500 font-semibold">
-                                    Зберегти
-                                </Text>
+                            <TouchableOpacity onPress={saveEdit} disabled={isLoading}>
+                                <Text className="text-emerald-500 font-semibold">Зберегти</Text>
                             </TouchableOpacity>
                         </View>
-                    </View>
+                    </ScrollView>
                 </View>
             </Modal>
         </View>

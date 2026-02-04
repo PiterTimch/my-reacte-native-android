@@ -9,7 +9,7 @@ import {IChatEdit} from "@/types/chat/IChatEdit";
 
 export const chatService = createApi({
     reducerPath: "api/chats",
-    tagTypes: ["Chats"],
+    tagTypes: ["Chats", "Chat"],
     baseQuery: createBaseQuery("chats"),
     endpoints: builder => ({
 
@@ -17,8 +17,11 @@ export const chatService = createApi({
             query: () => "types",
         }),
 
-        getUsers: builder.query<IUserShort[], void>({
-            query: () => "users",
+        getUsers: builder.query<IUserShort[], IUserSearch>({
+            query: params => ({
+                url: "users",
+                params,
+            }),
         }),
 
         createChat: builder.mutation<number, IChatCreate>({
@@ -36,7 +39,7 @@ export const chatService = createApi({
                 method: "PUT",
                 body,
             }),
-            invalidatesTags: ["Chats"],
+            invalidatesTags: ["Chats", "Chat"],
         }),
 
         getMyChats: builder.query<IChatListItem[], void>({
@@ -46,6 +49,7 @@ export const chatService = createApi({
 
         getChatMessages: builder.query<IMessageItem[], number>({
             query: chatId => `${chatId}/messages`,
+            providesTags: ["Chat"]
         }),
 
         amIAdmin: builder.query<boolean, number>({
