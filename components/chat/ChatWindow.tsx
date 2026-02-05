@@ -9,7 +9,6 @@ import {
 } from "react-native";
 import { getChatConnection } from "@/hubs/chatHub";
 import { IMessageItem } from "@/types/chat/IMessageItem";
-import { IUserShort } from "@/types/chat/IUserShort";
 import {
     useGetChatMessagesQuery,
     useAmIAdminQuery,
@@ -38,14 +37,12 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
     const [editVisible, setEditVisible] = useState(false);
     const [chatName, setChatName] = useState("");
 
-    // стейти для додавання / видалення користувачів
     const [addUserIds, setAddUserIds] = useState<number[]>([]);
     const [removeUserIds, setRemoveUserIds] = useState<number[]>([]);
-    const [searchEmail, setSearchEmail] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
 
     const scrollViewRef = useRef<ScrollView>(null);
 
-    // --- Повідомлення ---
     useEffect(() => {
         if (history) setMessages(history);
     }, [history]);
@@ -79,12 +76,11 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
         setInput("");
     };
 
-    // --- Модалка редагування ---
     const openEdit = () => {
         setChatName("");
         setAddUserIds([]);
         setRemoveUserIds([]);
-        setSearchEmail("");
+        setSearchQuery("");
         setEditVisible(true);
     };
 
@@ -101,19 +97,17 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
         setEditVisible(false);
         setAddUserIds([]);
         setRemoveUserIds([]);
-        setSearchEmail("");
+        setSearchQuery("");
     };
 
-    // --- Поточні учасники ---
     const { data: members } = useGetUsersQuery(
         { chatId: chatId! },
         { skip: !editVisible || !chatId }
     );
 
-    // --- Пошук користувачів для додавання ---
     const { data: searchUsers } = useGetUsersQuery(
-        { email: searchEmail },
-        { skip: !editVisible || searchEmail.length < 2 }
+        { query: searchQuery },
+        { skip: !editVisible || searchQuery.length < 2 }
     );
 
     const toggleAdd = (id: number) => {
@@ -138,7 +132,6 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
 
     return (
         <View className="flex-1">
-            {/* HEADER */}
             <View className="flex-row items-center justify-between p-3 border-b border-zinc-300 dark:border-zinc-700">
                 <Text className="text-lg font-semibold text-zinc-900 dark:text-zinc-100">
                     Чат
@@ -154,7 +147,6 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                 )}
             </View>
 
-            {/* MESSAGES */}
             <ScrollView
                 ref={scrollViewRef}
                 className="flex-1 p-4"
@@ -176,7 +168,6 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                 ))}
             </ScrollView>
 
-            {/* INPUT */}
             <View className="flex-row p-2 border-t border-zinc-300 dark:border-zinc-700">
                 <TextInput
                     className="flex-1 p-3 bg-zinc-100 dark:bg-zinc-900 rounded-xl text-zinc-900 dark:text-zinc-100"
@@ -194,7 +185,6 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                 </TouchableOpacity>
             </View>
 
-            {/* EDIT MODAL */}
             <Modal visible={editVisible} transparent animationType="fade">
                 <View className="flex-1 bg-black/50 items-center justify-center">
                     <ScrollView className="w-[90%] bg-white dark:bg-zinc-900 rounded-xl p-4">
@@ -203,7 +193,6 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                             Редагувати чат
                         </Text>
 
-                        {/* Назва чату */}
                         <TextInput
                             value={chatName}
                             onChangeText={setChatName}
@@ -212,7 +201,6 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                             className="p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 mb-4"
                         />
 
-                        {/* Поточні учасники */}
                         <Text className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
                             Поточні учасники:
                         </Text>
@@ -234,11 +222,10 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                             </View>
                         ))}
 
-                        {/* Пошук для додавання */}
                         <TextInput
-                            value={searchEmail}
-                            onChangeText={setSearchEmail}
-                            placeholder="Пошук користувачів по email"
+                            value={searchQuery}
+                            onChangeText={setSearchQuery}
+                            placeholder="Пошук користувачів по імені"
                             placeholderTextColor="#888"
                             className="p-3 rounded-lg bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 mb-2"
                         />
@@ -260,7 +247,6 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                             </TouchableOpacity>
                         ))}
 
-                        {/* Кнопки */}
                         <View className="flex-row justify-end gap-3 mt-3">
                             <TouchableOpacity onPress={() => setEditVisible(false)}>
                                 <Text className="text-zinc-500">Скасувати</Text>

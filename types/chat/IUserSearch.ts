@@ -1,4 +1,4 @@
 export interface IUserSearch {
-    email?: string;
+    query?: string;
     chatId?: number;
 }
