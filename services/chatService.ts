@@ -6,6 +6,7 @@ import { IChatCreate } from "@/types/chat/IChatCreate";
 import {IChatListItem} from "@/types/chat/IChatListItem";
 import {IMessageItem} from "@/types/chat/IMessageItem";
 import {IChatEdit} from "@/types/chat/IChatEdit";
+import { IUserSearch } from "@/types/chat/IUserSearch";
 
 export const chatService = createApi({
     reducerPath: "api/chats",
@@ -22,6 +23,7 @@ export const chatService = createApi({
                 url: "users",
                 params,
             }),
+            providesTags: ["Chat"],
         }),
 
         createChat: builder.mutation<number, IChatCreate>({
@@ -48,8 +50,7 @@ export const chatService = createApi({
         }),
 
         getChatMessages: builder.query<IMessageItem[], number>({
-            query: chatId => `${chatId}/messages`,
-            providesTags: ["Chat"]
+            query: chatId => `${chatId}/messages`
         }),
 
         amIAdmin: builder.query<boolean, number>({
