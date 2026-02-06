@@ -105,7 +105,11 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
             <ScrollView
                 ref={scrollRef}
                 className="flex-1 p-4"
-                contentContainerStyle={{ gap: 8 }}
+                contentContainerStyle={{
+                    paddingBottom: 20,
+                    gap: 8
+                }}
+                keyboardShouldPersistTaps="handled"
                 onContentSizeChange={() =>
                     scrollRef.current?.scrollToEnd({ animated: true })
                 }
