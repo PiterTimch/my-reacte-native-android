@@ -5,6 +5,7 @@ import { useAppSelector } from "@/store";
 import {createChatConnection} from "@/hubs/chatHub";
 import ChatList from "@/components/chat/ChatList";
 import ChatWindow from "@/components/chat/ChatWindow";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function JoinScreen() {
     const { data: chats } = useGetMyChatsQuery();
@@ -28,7 +29,7 @@ export default function JoinScreen() {
             className="flex-1 bg-zinc-50 dark:bg-zinc-950"
         >
             <StatusBar barStyle="default" />
-            <View className="flex-1 flex-row">
+            <SafeAreaView className="flex-1 flex-row">
                 <View className="max-w-[280px] w-1/3 border-r border-zinc-200 dark:border-zinc-800">
                     <ChatList
                         chats={chats ?? []}
@@ -40,7 +41,7 @@ export default function JoinScreen() {
                 <View className="flex-1">
                     <ChatWindow chatId={activeChatId} />
                 </View>
-            </View>
+            </SafeAreaView>
         </KeyboardAvoidingView>
     );
 }
