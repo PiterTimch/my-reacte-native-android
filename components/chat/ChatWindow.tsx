@@ -4,6 +4,7 @@ import {
     Text,
     ScrollView,
     TouchableOpacity,
+    Image,
 } from "react-native";
 
 import { InputField } from "@/components/form/InputField";
@@ -17,6 +18,7 @@ import {
 import { IMessageItem } from "@/types/chat/IMessageItem";
 
 import EditChatModal from "./EditChatModal";
+import {IMAGE_URL} from "@/constants/Urls";
 
 interface ChatWindowProps {
     chatId: number | null;
@@ -122,14 +124,21 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                 {messages.map((m, i) => (
                     <View
                         key={m.id || `msg-${i}`}
-                        className="bg-zinc-200 dark:bg-zinc-800 p-3 rounded-xl self-start max-w-[85%]"
+                        className="bg-zinc-200 dark:bg-zinc-800 p-3 rounded-xl self-start max-w-[85%] flex-row items-start gap-2"
                     >
-                        <Text className="text-zinc-600 dark:text-zinc-400 font-semibold mb-1">
-                            {m.userName || "Користувач"}
-                        </Text>
-                        <Text className="text-zinc-900 dark:text-zinc-100">
-                            {m.message}
-                        </Text>
+                        <Image
+                            source={{ uri: `${IMAGE_URL}400_${m.userImage}` }}
+                            className="w-10 h-10 rounded-full"
+                        />
+
+                        <View className="flex-1">
+                            <Text className="text-zinc-600 dark:text-zinc-400 font-semibold mb-1">
+                                {m.userName || "Користувач"}
+                            </Text>
+                            <Text className="text-zinc-900 dark:text-zinc-100">
+                                {m.message}
+                            </Text>
+                        </View>
                     </View>
                 ))}
             </ScrollView>
