@@ -127,7 +127,7 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                         className="bg-zinc-200 dark:bg-zinc-800 p-3 rounded-xl self-start max-w-[85%] flex-row items-start gap-2"
                     >
                         <Image
-                            source={{ uri: `${IMAGE_URL}400_${m.userImage}` }}
+                            source={{ uri: `${IMAGE_URL}100_${m.userImage}` }}
                             className="w-10 h-10 rounded-full"
                         />
 
