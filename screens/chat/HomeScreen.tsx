@@ -25,12 +25,13 @@ export default function HomeScreen() {
                 className="absolute w-full h-[380px] rounded-full blur-[120px]"
             />
 
-            <SafeAreaView className="flex-1 px-8 justify-between py-16">
+            <SafeAreaView className="flex-1 px-8 justify-between">
                 <ScrollView
+                    showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handled"
-                    contentContainerStyle={{paddingBottom: 40}}
+                    contentContainerStyle={{paddingBottom: 10}}
                 >
-                    <View className="items-center mt-10">
+                    <View className="items-center mt-10 py-16">
                         <View className="bg-emerald-500/10 px-4 py-1 rounded-full mb-4 border border-emerald-500/20">
                             <Text
                                 className="text-emerald-600 dark:text-emerald-400 text-[10px] font-bold tracking-[3px] uppercase">

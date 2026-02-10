@@ -23,6 +23,7 @@ export default function Index() {
 
             <SafeAreaView className="flex-1 px-8 justify-between">
                 <ScrollView
+                    showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handled"
                     contentContainerStyle={{paddingBottom: 10}}
                 >
