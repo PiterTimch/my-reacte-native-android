@@ -74,10 +74,6 @@ export default function RegisterScreen() {
     return (
         <View className="flex-1 bg-zinc-50 dark:bg-zinc-950">
             <StatusBar barStyle="default"/>
-            <LinearGradient
-                colors={["rgba(16,185,129,0.35)", "transparent"]}
-                className="absolute w-full h-[380px] rounded-full blur-[120px]"
-            />
 
             <KeyboardAvoidingView
                 style={{flex: 1}}
