@@ -130,7 +130,6 @@ const ChatWindow: FC<ChatWindowProps> = ({ chatId }) => {
                             source={{ uri: `${IMAGE_URL}100_${m.userImage}` }}
                             className="w-10 h-10 rounded-full"
                         />
-
                         <View className="flex-1">
                             <Text className="text-zinc-600 dark:text-zinc-400 font-semibold mb-1">
                                 {m.userName || "Користувач"}
