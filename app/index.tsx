@@ -49,20 +49,15 @@ export default function Index() {
                 </View>
 
                 <View className="gap-y-5">
-
-                    <View className="relative">
-                        <View className="absolute top-1 left-0 right-0 bottom-[-4] bg-emerald-700 rounded-2xl" />
-
-                        <TouchableOpacity
-                            activeOpacity={0.85}
-                            onPress={() => router.push("/login")}
-                            className="bg-emerald-500 py-4 rounded-2xl items-center"
-                        >
-                            <Text className="text-white text-xl font-bold tracking-tight">
-                                Увійти до аккаунту
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity
+                        activeOpacity={0.85}
+                        onPress={() => router.push("/login")}
+                        className="border text-emerald-500 border-zinc-300 dark:border-zinc-700 py-4 rounded-2xl items-center"
+                    >
+                        <Text className="text-zinc-900 dark:text-zinc-100 text-lg font-semibold">
+                            Увійти до аккаунту
+                        </Text>
+                    </TouchableOpacity>
 
                     <TouchableOpacity
                         activeOpacity={0.85}
