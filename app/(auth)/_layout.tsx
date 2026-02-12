@@ -7,13 +7,7 @@ export default function AuthLayout() {
     return (
         <View className="flex-1 bg-white dark:bg-zinc-950">
             <SafeAreaView className="flex-1 p-6">
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : undefined}
-                    className="flex-1"
-                >
-                    <Slot/>
-                </KeyboardAvoidingView>
-
+                <Slot/>
                 <AuthTabs/>
             </SafeAreaView>
         </View>

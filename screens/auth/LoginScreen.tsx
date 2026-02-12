@@ -43,7 +43,10 @@ export default function LoginScreen() {
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handled"
-                    contentContainerStyle={{paddingBottom: 10}}
+                    contentContainerStyle={{
+                        paddingBottom: 40,
+                        flexGrow: 1,
+                    }}
                 >
                     <View className="pt-16">
                         <View className="items-center mb-12">

@@ -78,13 +78,17 @@ export default function RegisterScreen() {
             <KeyboardAvoidingView
                 style={{flex: 1}}
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
             >
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handled"
-                    contentContainerStyle={{paddingBottom: 10}}
+                    contentContainerStyle={{
+                        paddingBottom: 40,
+                        flexGrow: 1,
+                    }}
                 >
-                    <View className="items-center mt-4">
+                <View className="items-center mt-4">
                         <Text className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter">
                             Реєстрація
                         </Text>
