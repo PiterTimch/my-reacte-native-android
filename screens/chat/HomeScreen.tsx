@@ -56,17 +56,27 @@ export default function HomeScreen() {
                     </View>
 
                     <View className="items-center my-10">
-                        <View
-                            className="w-44 h-44 rounded-full bg-emerald-500/10 items-center justify-center overflow-hidden">
-                            {user?.image && IMAGE_URL ? (
-                                <Image
-                                    source={{uri: `${IMAGE_URL}400_${user.image}`}}
-                                    className="w-full h-full"
-                                    resizeMode="cover"
-                                />
-                            ) : (
-                                <Text className="text-7xl">👤</Text>
-                            )}
+                        <View className="relative">
+
+                            <View className="w-44 h-44 rounded-full bg-emerald-500/10 items-center justify-center overflow-hidden">
+                                {user?.image && IMAGE_URL ? (
+                                    <Image
+                                        source={{uri: `${IMAGE_URL}400_${user.image}`}}
+                                        className="w-full h-full"
+                                        resizeMode="cover"
+                                    />
+                                ) : (
+                                    <Text className="text-7xl">👤</Text>
+                                )}
+                            </View>
+
+                            <TouchableOpacity
+                                activeOpacity={0.85}
+                                onPress={() => router.push("/profile")}
+                                className="absolute bottom-1 right-1 w-12 h-12 rounded-full bg-emerald-500 items-center justify-center shadow-lg"
+                            >
+                                <Text className="text-xl">✏️</Text>
+                            </TouchableOpacity>
 
                         </View>
                     </View>

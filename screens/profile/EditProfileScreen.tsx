@@ -13,18 +13,21 @@ import * as ImagePicker from "expo-image-picker";
 
 import {ImagePickerButton} from "@/components/form/ImagePickerButton";
 import {InputField} from "@/components/form/InputField";
-import {PasswordField} from "@/components/form/PasswordField";
-import {useEditProfileMutation, useRegisterMutation} from "@/services/authService";
-import {IRegister} from "@/types/auth/IRegister";
+import {useEditProfileMutation} from "@/services/authService";
 import {useForm} from "@/hooks/useForm";
 import {router} from "expo-router";
 import {IProfileEdit} from "@/types/auth/IProfileEdit";
+import {useAppSelector} from "@/store";
+import {useEffect} from "react";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 export default function EditProfileScreen() {
+    const {user} = useAppSelector(state => state.auth);
+
     const {form, setForm, onChange} = useForm<IProfileEdit>({
-        firstName: "",
-        lastName: "",
-        email: "",
+        firstName: user!.name.split(" ")[0],
+        lastName: user!.name.split(" ")[1] ?? "",
+        email: user!.email,
     });
 
     const [edit, {isLoading}] = useEditProfileMutation();
@@ -72,78 +75,83 @@ export default function EditProfileScreen() {
                 colors={["rgba(16,185,129,0.35)", "transparent"]}
                 className="absolute w-full h-[380px] rounded-full blur-[120px]"
             />
-
-            <KeyboardAvoidingView
-                style={{flex: 1}}
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
-            >
-                <ScrollView
-                    showsVerticalScrollIndicator={false}
-                    keyboardShouldPersistTaps="handled"
-                    contentContainerStyle={{paddingBottom: 10}}
+            <SafeAreaView className="flex-1 px-8 justify-between">
+                <KeyboardAvoidingView
+                    style={{flex: 1}}
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
                 >
-                    <View className="items-center mt-4">
-                        <Text className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter">
-                            Реєстрація
-                        </Text>
-                        <View className="h-[2px] w-12 bg-emerald-500 my-6 rounded-full"/>
-                        <Text
-                            className="text-zinc-500 dark:text-zinc-400 text-center text-lg leading-7 font-medium px-4">
-                            Створіть свій профіль, щоб почати використовувати додаток
-                        </Text>
-                    </View>
-
-                    <View className="items-center my-8">
-                        <ImagePickerButton
-                            imageUri={form.imageFile?.uri ?? null}
-                            onPress={pickImage}
-                        />
-                        <Text className="text-zinc-400 dark:text-zinc-500 mt-2">
-                            Натисніть, щоб обрати фото
-                        </Text>
-                    </View>
-
-                    <View className="flex-row gap-4 mb-4">
-                        <View className="flex-1">
-                            <InputField
-                                placeholder="Ім'я"
-                                value={form.firstName}
-                                onChangeText={onChange("firstName")}
-                            />
-                        </View>
-                        <View className="flex-1">
-                            <InputField
-                                placeholder="Прізвище"
-                                value={form.lastName}
-                                onChangeText={onChange("lastName")}
-                            />
-                        </View>
-                    </View>
-
-                    <View className="gap-y-4">
-                        <InputField
-                            placeholder="Пошта"
-                            keyboardType="email-address"
-                            autoCapitalize="none"
-                            value={form.email}
-                            onChangeText={onChange("email")}
-                        />
-                    </View>
-
-                    <View className="mt-8 mb-4">
-                        <TouchableOpacity
-                            className="bg-emerald-500 py-5 rounded-2xl items-center shadow-md"
-                            activeOpacity={0.85}
-                            onPress={onSubmit}
-                            disabled={isLoading}
-                        >
-                            <Text className="text-white text-xl font-bold tracking-tight">
-                                {isLoading ? "Створення..." : "Створити профіль"}
+                    <ScrollView
+                        showsVerticalScrollIndicator={false}
+                        keyboardShouldPersistTaps="handled"
+                        contentContainerStyle={{
+                            paddingBottom: 40,
+                            flexGrow: 1,
+                        }}
+                    >
+                        <View className="items-center mt-4">
+                            <Text className="text-5xl font-black text-zinc-900 dark:text-white tracking-tighter">
+                                Редагування профілю
                             </Text>
-                        </TouchableOpacity>
-                    </View>
-                </ScrollView>
-            </KeyboardAvoidingView>
+                            <View className="h-[2px] w-12 bg-emerald-500 my-6 rounded-full"/>
+                            <Text
+                                className="text-zinc-500 dark:text-zinc-400 text-center text-lg leading-7 font-medium px-4">
+                                Ви можете змінити свої дані
+                            </Text>
+                        </View>
+
+                        <View className="items-center my-8">
+                            <ImagePickerButton
+                                imageUri={form.imageFile?.uri ?? null}
+                                onPress={pickImage}
+                            />
+                            <Text className="text-zinc-400 dark:text-zinc-500 mt-2">
+                                Натисніть, щоб обрати фото
+                            </Text>
+                        </View>
+
+                        <View className="flex-row gap-4 mb-4">
+                            <View className="flex-1">
+                                <InputField
+                                    placeholder="Ім'я"
+                                    value={form.firstName}
+                                    onChangeText={onChange("firstName")}
+                                />
+                            </View>
+                            <View className="flex-1">
+                                <InputField
+                                    placeholder="Прізвище"
+                                    value={form.lastName}
+                                    onChangeText={onChange("lastName")}
+                                />
+                            </View>
+                        </View>
+
+                        <View className="gap-y-4">
+                            <InputField
+                                placeholder="Пошта"
+                                keyboardType="email-address"
+                                autoCapitalize="none"
+                                value={form.email}
+                                onChangeText={onChange("email")}
+                            />
+                        </View>
+
+                        <View className="mt-8 mb-4">
+                            <TouchableOpacity
+                                className="bg-emerald-500 py-5 rounded-2xl items-center shadow-md"
+                                activeOpacity={0.85}
+                                onPress={onSubmit}
+                                disabled={isLoading}
+                            >
+                                <Text className="text-white text-xl font-bold tracking-tight">
+                                    {isLoading ? "Редагування..." : "Редагувати профіль"}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+            </SafeAreaView>
         </View>
     );
 }
