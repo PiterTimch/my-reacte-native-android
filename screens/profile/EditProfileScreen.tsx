@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {
     View,
     Text,
@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
-
+import {IMAGE_URL} from "@/constants/Urls";
 import {ImagePickerButton} from "@/components/form/ImagePickerButton";
 import {InputField} from "@/components/form/InputField";
 import {useEditProfileMutation} from "@/services/authService";
@@ -102,7 +102,14 @@ export default function EditProfileScreen() {
 
                         <View className="items-center my-8">
                             <ImagePickerButton
-                                imageUri={form.imageFile?.uri ?? null}
+                                imageUri={
+                                    form.imageFile?.uri
+                                        ? form.imageFile.uri
+                                        : user?.image
+                                            ? `${IMAGE_URL}400_${user.image}`
+                                            : null
+                                }
+
                                 onPress={pickImage}
                             />
                             <Text className="text-zinc-400 dark:text-zinc-500 mt-2">
