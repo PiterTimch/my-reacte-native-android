@@ -6,21 +6,19 @@ import {ILogin} from "@/types/auth/ILogin";
 import {serialize} from "object-to-formdata";
 import type {Dispatch} from "@reduxjs/toolkit";
 import {loginSuccess} from "@/store/slices/authSlice";
-import storage from "@/store/sorages/tokenStorage";
+import {IProfileEdit} from "@/types/auth/IProfileEdit";
 
 const handleAuthSuccess = async (
-    queryFulfilled: Promise<{ data: { token: string } }>,
+    queryFulfilled: Promise<{ data: {token: string} }>,
     dispatch: Dispatch
 ) => {
     try {
         const { data } = await queryFulfilled;
-
         if (data?.token) {
-            await storage.setItem("token", data.token);
             dispatch(loginSuccess(data.token));
         }
     } catch (error) {
-        console.error("Auth error:", error);
+        console.error('Auth error:', error);
     }
 };
 
@@ -38,7 +36,6 @@ export const authService = createApi({
                 handleAuthSuccess(queryFulfilled, dispatch)
         }),
 
-
         register: builder.mutation<IAuthResponse, IRegister>({
             query: (credentials) => {
                 const formData =  serialize(credentials);
@@ -51,12 +48,26 @@ export const authService = createApi({
             },
             onQueryStarted: async (_arg, { dispatch, queryFulfilled }) =>
                 handleAuthSuccess(queryFulfilled, dispatch)
-        })
+        }),
 
+        editProfile: builder.mutation<IAuthResponse, IProfileEdit>({
+            query: (credentials) => {
+                const formData =  serialize(credentials);
+
+                return {
+                    url: 'edit-profile',
+                    method: 'PUT',
+                    body: formData
+                };
+            },
+            onQueryStarted: async (_arg, { dispatch, queryFulfilled }) =>
+                handleAuthSuccess(queryFulfilled, dispatch)
+        })
     })
 });
 
 export const {
     useLoginMutation,
-    useRegisterMutation
+    useRegisterMutation,
+    useEditProfileMutation
 } = authService;
