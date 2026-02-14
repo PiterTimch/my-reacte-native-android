@@ -84,7 +84,7 @@ export default function RegisterScreen() {
                     showsVerticalScrollIndicator={false}
                     keyboardShouldPersistTaps="handled"
                     contentContainerStyle={{
-                        paddingBottom: 40,
+                        paddingBottom: 80,
                         flexGrow: 1,
                     }}
                 >
